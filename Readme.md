@@ -1,7 +1,7 @@
 # Личный проект «Большое путешествие» [![Build status][travis-image]][travis-url]
 
 * Студент: [Алексей Бабыкин](https://up.htmlacademy.ru/ecmascript/9/user/153671).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Рожков](https://htmlacademy.ru/profile/id1069033).
 
 ---
 
