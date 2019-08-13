@@ -10,7 +10,7 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, `public`),
-    publicPath: `http:!/localhost:8080/`,
+    publicPath: `http://localhost:8080/`,
     compress: true,
     watchContentBase: true,
   },
