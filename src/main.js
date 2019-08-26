@@ -5,7 +5,10 @@ import {TripSort} from "./components/sort";
 import {EventList} from "./components/event-list";
 import {Event} from "./components/event";
 import {EventEdit} from "./components/event-edit";
+import {events} from "./data/event";
 
+
+const countEvents = events.length;
 
 const render = (container, html, place = `beforeend`) => {
   container.insertAdjacentHTML(place, html);
@@ -26,8 +29,10 @@ render(eventListTempContainer, EventList());
 
 const tripEventsList = eventListTempContainer.querySelector(` ul.trip-events__list`);
 render(tripEventsList, EventEdit());
-for (let i = 3; i > 0; i--) {
-  render(tripEventsList, Event());
+
+for (let i = 0; i < countEvents; i++) {
+  console.log(events[i]);
+  render(tripEventsList, Event(events[i]));
 }
 
 const tripEventsSection = document.querySelector(`section.trip-events`);
