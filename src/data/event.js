@@ -34,6 +34,7 @@ const descriptions = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. C
   Nunc fermentum tortor ac porta dapibus. In rutrum ac purus sit amet tempus`.split(`. `);
 
 const MINUTE = 1000 * 60;
+const DAY = MINUTE * 60 * 24;
 
 const getDataEvent = () => {
   return {
@@ -42,6 +43,7 @@ const getDataEvent = () => {
     city: getRandomValue(citys),
     pictures: new Array(getRandomInteger(2, 5)).fill(`http://picsum.photos/300/150?r=${Math.random()}`),
     description: new Array(getRandomInteger(1, 3)).fill(``).map(() => getRandomValue(descriptions)),
+    date: new Date(Date.now() + getRandomInteger(1, 5) * DAY),
     startTime: Date.now(),
     endTime: Date.now() + getRandomInteger(MINUTE * 10, MINUTE * 60),
     price: getRandomInteger(1, 100),
@@ -79,4 +81,27 @@ const getDataEvent = () => {
     ],
   };
 };
-export const events = Array(COUNT_EVENTS).fill(``).map(() => getDataEvent());
+const events = Array(COUNT_EVENTS).fill(``).map(() => getDataEvent());
+const getCitiesData = (data) => {
+  const allCitiesData = data.map((elem) => {
+    return elem.city;
+  });
+
+  if (allCitiesData[0] !== allCitiesData[length - 1]) {
+    return Array.from(new Set(allCitiesData));
+  }
+  return Array.from(new Set(allCitiesData).push(allCitiesData[0]));
+};
+const getDatesData = (data) => {
+  const datesArray = data.map((elem) => {
+    return elem.date;
+  });
+
+  return datesArray.sort((a, b) => {
+    return new Date(a) - new Date(b);
+  });
+};
+
+const cityEvent = getCitiesData(events);
+const dateEvent = getDatesData(events);
+export {events, cityEvent, dateEvent};
