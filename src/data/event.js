@@ -41,7 +41,7 @@ const getDataEvent = () => {
     title: getRandomValue(titles),
     typeIcon: getRandomValue(typesIcons),
     city: getRandomValue(citys),
-    pictures: new Array(getRandomInteger(2, 5)).fill(`http://picsum.photos/300/150?r=${Math.random()}`),
+    pictures: new Array(getRandomInteger(2, 5)).fill(``).map(() => `http://picsum.photos/300/150?r=${Math.random()}`),
     description: new Array(getRandomInteger(1, 3)).fill(``).map(() => getRandomValue(descriptions)),
     date: new Date(Date.now() + getRandomInteger(1, 5) * DAY),
     startTime: Date.now(),

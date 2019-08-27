@@ -33,7 +33,7 @@ const renderTripInfo = (container, template, data, place = `afterbegin`) => {
 const renderEventEdit = (container, template, data, place = `afterbegin`) => {
   container.insertAdjacentHTML(place, template(data));
 };
-const pushCostSumm = (element, data) =>{
+const pushCostSumm = (element, data) => {
   element.innerHTML = data.reduce((value, currentItem) => {
     return value + currentItem.price;
   }, 0);
@@ -50,7 +50,7 @@ renderMenu(tripControlsHeadings[0], TripControls, dataMenu);
 renderFilers(tripControlsHeadings[1], TripFilters, dataFilters);
 renderEventList(eventListTempContainer, EventList, dateEvent);
 const tripEventsList = eventListTempContainer.querySelectorAll(`.trip-events__list`);
-renderEventEdit(tripEventsList[0], EventEdit, events.slice(1));
+renderEventEdit(tripEventsList[0], EventEdit, events[0]);
 renderEvents(tripEventsList, Event, events);
 render(tripEventsSection, getTripSort() + eventListTempContainer.innerHTML);
 pushCostSumm(costValueElement, events);
