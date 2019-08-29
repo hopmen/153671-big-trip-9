@@ -2,6 +2,7 @@ import {createElement} from "../utils";
 
 export class getTripSort {
   constructor() {
+    this._element = null;
   }
 
   getElement() {

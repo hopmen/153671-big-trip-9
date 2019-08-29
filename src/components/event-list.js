@@ -3,6 +3,7 @@ import {createElement} from "../utils";
 export class EventList {
   constructor(data) {
     this._data = data;
+    this._element = null;
   }
 
   getElement() {

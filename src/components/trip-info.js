@@ -3,7 +3,7 @@ import {createElement} from "../utils";
 export class TripInfo {
   constructor(data) {
     this._data = data;
-
+    this._element = null;
   }
 
   getElement() {

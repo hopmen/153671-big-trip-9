@@ -10,6 +10,7 @@ export class EventEdit {
     this._options = options;
     this._description = description;
     this._pictures = pictures;
+    this._element = null;
   }
   getElement() {
     if (!this._element) {
