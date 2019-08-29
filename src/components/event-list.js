@@ -1,8 +1,27 @@
-export const EventList = (data) => `
+import {createElement} from "../utils";
+
+export class EventList {
+  constructor(data) {
+    this._data = data;
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+  getTemplate() {
+    return `
   <ul class="trip-days">
-      ${data.map((elem) => `<li class="trip-days__item  day">
+      ${this._data.map((elem) => `<li class="trip-days__item  day">
       <div class="day__info">
-        <span class="day__counter">${data.indexOf(elem) + 1}</span>
+        <span class="day__counter">${this._data.indexOf(elem) + 1}</span>
         <time class="day__date" datetime="${new Date(elem).toLocaleString()}">${new Date(elem).getMonth()} ${new Date(elem).getDate()}</time>
       </div>
 
@@ -10,3 +29,5 @@ export const EventList = (data) => `
       </ul>
     </li>`).join(``)}
   </ul>`;
+  }
+}
