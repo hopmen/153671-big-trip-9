@@ -19,9 +19,12 @@ export class TripControls {
 
   getTemplate() {
     return `
-      <nav class="trip-controls__trip-tabs  trip-tabs">
-        ${this._data.length > 0 ? this._data.map((i) => `<a class="trip-tabs__btn ${i.isActive ? `trip-tabs__btn--active` : ``}" href="#">${i.title}</a>`).join(``) : ``}
-      </nav>
+      <div>
+        <h2 class="visually-hidden">Switch trip view</h2>
+        <nav class="trip-controls__trip-tabs  trip-tabs">
+          ${this._data.length > 0 ? this._data.map((i) => `<a class="trip-tabs__btn ${i.isActive ? `trip-tabs__btn--active` : ``}" href="#">${i.title}</a>`).join(``) : ``}
+        </nav>
+      </div>
     `;
   }
 }

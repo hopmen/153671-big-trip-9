@@ -1,54 +1,67 @@
 import {TripInfo} from "./components/trip-info";
 import {TripControls} from "./components/menu";
 import {TripFilters} from "./components/filter";
-import {cityEvent} from "./data/event";
+import {Event} from "./components/event";
+import {cityEvent, dateEvent, events} from "./data/event";
 import {dataMenu} from "./data/menu";
 import {render} from "./utils";
 import {dataFilters} from "./data/filters";
+import {EventList} from "./components/event-list";
+import {EventEdit} from "./components/event-edit";
 
-/*const renderEvents = (containers, template, data, place = `beforeend`) => {
-  containers.forEach((container) => {
-    data.forEach((i) => container.insertAdjacentHTML(place, template(i)));
+const renderEvents = (data) => {
+  tripEventsList.forEach((container) => {
+    data.forEach((onlyCardData) => {
+      const eventCard = new Event(onlyCardData);
+      const eventForm = new EventEdit(onlyCardData);
+
+      eventCard.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+        container.replaceChild(eventForm.getElement(), eventCard.getElement());
+      });
+
+      eventForm.getElement().querySelector(`.event--edit`).addEventListener(`submit`, () => {
+        container.replaceChild(eventCard.getElement(), eventForm.getElement());
+      });
+
+      eventForm.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+        container.replaceChild(eventCard.getElement(), eventForm.getElement());
+      });
+      render(container, eventCard.getElement());
+    });
   });
-};*/
+};
 const renderMenu = (data) => {
   const tripControls = new TripControls(data);
-  render(tripControlsHeadings[0], tripControls.getTemplate(), `afterend`);
+  render(tripControlsElement, tripControls.getElement());
 };
 const renderFilers = (data) => {
   const tripFilters = new TripFilters(data);
-  render(tripControlsHeadings[1], tripFilters.getTemplate(), `afterend`);
-};/*
-const renderEventList = (container, template, data, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template(data));
-};*/
+  render(tripControlsElement, tripFilters.getElement());
+};
+const renderEventList = (data) => {
+  const eventList = new EventList(data);
+  render(tripEventsContainer, eventList.getElement());
+};
 const renderTripInfo = (data) => {
   const tripInfo = new TripInfo(data);
-  render(tripInfoSection, tripInfo.getTemplate(), `afterbegin`);
+  render(tripInfoSection, tripInfo.getElement(), `begin`);
 };
-
-/*const renderEventEdit = (container, template, data, place = `afterbegin`) => {
-  container.insertAdjacentHTML(place, template(data));
+const updatePrice = (data) => {
+  costValueElement.innerHTML = data;
 };
-const pushCostSumm = (element, data) => {
-  element.innerHTML = data.reduce((value, currentItem) => {
-    return value + currentItem.price;
-  }, 0);
-};*/
 
 const tripInfoSection = document.querySelector(`section.trip-main__trip-info`);
-const tripControlsHeadings = document.querySelectorAll(`.trip-main__trip-controls h2`);
-const tripEventsSection = document.querySelector(`section.trip-events`);
+const tripControlsElement = document.querySelector(`.trip-controls`);
 const costValueElement = document.querySelector(`.trip-info__cost-value`);
-const eventListTempContainer = document.createElement(`div`);
+const tripEventsContainer = document.querySelector(`.trip-events`);
+let totalPrice = events.reduce((eventsPrice, currentItem) => {
+  return eventsPrice + currentItem.price;
+}, 0);
 
 renderTripInfo(cityEvent);
 renderMenu(dataMenu);
-renderFilers(dataFilters);/*
-renderEventList(eventListTempContainer, EventList, dateEvent);
-const tripEventsList = eventListTempContainer.querySelectorAll(`.trip-events__list`);
-renderEventEdit(tripEventsList[0], EventEdit, events[0]);
-renderEvents(tripEventsList, Event, events);
-render(tripEventsSection, getTripSort() + eventListTempContainer.innerHTML);
-pushCostSumm(costValueElement, events);
-*/
+renderFilers(dataFilters);
+renderEventList(dateEvent);
+const tripEventsList = tripEventsContainer.querySelectorAll(`.trip-events__list`);
+renderEvents(events);
+updatePrice(totalPrice);
