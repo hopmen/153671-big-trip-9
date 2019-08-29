@@ -1,9 +1,10 @@
 import {TripInfo} from "./components/trip-info";
 import {TripControls} from "./components/menu";
+import {TripFilters} from "./components/filter";
 import {cityEvent} from "./data/event";
 import {dataMenu} from "./data/menu";
 import {render} from "./utils";
-
+import {dataFilters} from "./data/filters";
 
 /*const renderEvents = (containers, template, data, place = `beforeend`) => {
   containers.forEach((container) => {
@@ -12,17 +13,18 @@ import {render} from "./utils";
 };*/
 const renderMenu = (data) => {
   const tripControls = new TripControls(data);
-  render(tripControlsHeadings[0], tripControls, `afterend`);
-};/*
-const renderFilers = (container, template, data, place = `afterend`) => {
-  container.insertAdjacentHTML(place, template(data));
+  render(tripControlsHeadings[0], tripControls.getTemplate(), `afterend`);
 };
+const renderFilers = (data) => {
+  const tripFilters = new TripFilters(data);
+  render(tripControlsHeadings[1], tripFilters.getTemplate(), `afterend`);
+};/*
 const renderEventList = (container, template, data, place = `beforeend`) => {
   container.insertAdjacentHTML(place, template(data));
 };*/
 const renderTripInfo = (data) => {
   const tripInfo = new TripInfo(data);
-  return (tripInfoSection, tripInfo.getElement(), `afterbegin`);
+  render(tripInfoSection, tripInfo.getTemplate(), `afterbegin`);
 };
 
 /*const renderEventEdit = (container, template, data, place = `afterbegin`) => {
@@ -35,14 +37,14 @@ const pushCostSumm = (element, data) => {
 };*/
 
 const tripInfoSection = document.querySelector(`section.trip-main__trip-info`);
-const tripControlsHeadings = document.querySelectorAll(`.trip-main__trip-controls h2`);/*
+const tripControlsHeadings = document.querySelectorAll(`.trip-main__trip-controls h2`);
 const tripEventsSection = document.querySelector(`section.trip-events`);
 const costValueElement = document.querySelector(`.trip-info__cost-value`);
-const eventListTempContainer = document.createElement(`div`);*/
+const eventListTempContainer = document.createElement(`div`);
 
 renderTripInfo(cityEvent);
-renderMenu(dataMenu);/*
-renderFilers(tripControlsHeadings[1], TripFilters, dataFilters);
+renderMenu(dataMenu);
+renderFilers(dataFilters);/*
 renderEventList(eventListTempContainer, EventList, dateEvent);
 const tripEventsList = eventListTempContainer.querySelectorAll(`.trip-events__list`);
 renderEventEdit(tripEventsList[0], EventEdit, events[0]);
