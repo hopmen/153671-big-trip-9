@@ -73,9 +73,9 @@ renderFilers(dataFilters);
 renderEventList(dateEvent);
 const tripEventsList = tripEventsContainer.querySelectorAll(`.trip-events__list`);
 renderEvents(events);
-if (events) {
-  let totalPrice = events.reduce((eventsPrice, currentItem) => {
-    return eventsPrice + currentItem.price;
-  }, 0);
-  updatePrice(totalPrice);
-}
+
+let totalPrice = events.reduce((eventsPrice, currentItem) => {
+  return eventsPrice + currentItem.price;
+}, 0);
+updatePrice(totalPrice);
+
