@@ -10,25 +10,37 @@ import {EventList} from "./components/event-list";
 import {EventEdit} from "./components/event-edit";
 
 const renderEvents = (data) => {
-  tripEventsList.forEach((container) => {
-    data.forEach((onlyCardData) => {
-      const eventCard = new Event(onlyCardData);
-      const eventForm = new EventEdit(onlyCardData);
+  if (data) {
+    tripEventsList.forEach((container) => {
+      data.forEach((onlyCardData) => {
+        const eventCard = new Event(onlyCardData);
+        const eventForm = new EventEdit(onlyCardData);
 
-      eventCard.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-        container.replaceChild(eventForm.getElement(), eventCard.getElement());
-      });
+        const onEscKeyDown = (e) => {
+          if (e.key === `Escape` || e.key === `Esc`) {
+            container.replaceChild(eventCard.getElement(), eventForm.getElement());
+            document.removeEventListener(`keydown`, onEscKeyDown);
+          }
+        };
 
-      eventForm.getElement().querySelector(`.event--edit`).addEventListener(`submit`, () => {
-        container.replaceChild(eventCard.getElement(), eventForm.getElement());
-      });
+        eventCard.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+          container.replaceChild(eventForm.getElement(), eventCard.getElement());
+          document.addEventListener(`keydown`, onEscKeyDown);
+        });
 
-      eventForm.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-        container.replaceChild(eventCard.getElement(), eventForm.getElement());
+        eventForm.getElement().querySelector(`.event--edit`).addEventListener(`submit`, () => {
+          container.replaceChild(eventCard.getElement(), eventForm.getElement());
+          document.addEventListener(`keydown`, onEscKeyDown);
+        });
+
+        eventForm.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+          container.replaceChild(eventCard.getElement(), eventForm.getElement());
+          document.removeEventListener(`keydown`, onEscKeyDown);
+        });
+        render(container, eventCard.getElement());
       });
-      render(container, eventCard.getElement());
     });
-  });
+  }
 };
 const renderMenu = (data) => {
   const tripControls = new TripControls(data);
@@ -54,9 +66,6 @@ const tripInfoSection = document.querySelector(`section.trip-main__trip-info`);
 const tripControlsElement = document.querySelector(`.trip-controls`);
 const costValueElement = document.querySelector(`.trip-info__cost-value`);
 const tripEventsContainer = document.querySelector(`.trip-events`);
-let totalPrice = events.reduce((eventsPrice, currentItem) => {
-  return eventsPrice + currentItem.price;
-}, 0);
 
 renderTripInfo(cityEvent);
 renderMenu(dataMenu);
@@ -64,4 +73,9 @@ renderFilers(dataFilters);
 renderEventList(dateEvent);
 const tripEventsList = tripEventsContainer.querySelectorAll(`.trip-events__list`);
 renderEvents(events);
-updatePrice(totalPrice);
+if (events) {
+  let totalPrice = events.reduce((eventsPrice, currentItem) => {
+    return eventsPrice + currentItem.price;
+  }, 0);
+  updatePrice(totalPrice);
+}
