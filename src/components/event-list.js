@@ -1,13 +1,12 @@
-export const EventList = () => `
+export const EventList = (data) => `
   <ul class="trip-days">
-    <li class="trip-days__item  day">
+      ${data.map((elem) => `<li class="trip-days__item  day">
       <div class="day__info">
-        <span class="day__counter">1</span>
-        <time class="day__date" datetime="2019-01-01">JAN 1</time>
+        <span class="day__counter">${data.indexOf(elem) + 1}</span>
+        <time class="day__date" datetime="${new Date(elem).toLocaleString()}">${new Date(elem).getMonth()} ${new Date(elem).getDate()}</time>
       </div>
 
       <ul class="trip-events__list">
       </ul>
-    </li>
-  </ul>
-`;
+    </li>`).join(``)}
+  </ul>`;
