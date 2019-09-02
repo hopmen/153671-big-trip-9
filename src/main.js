@@ -1,7 +1,7 @@
 import {TripInfo} from "./components/trip-info";
-import {TripControls} from "./components/menu";
-import {TripFilters} from "./components/filter";
-import {Event} from "./components/event";
+import {TripControls} from "./components/trip-controls";
+import {TripFilters} from "./components/trip-filter";
+import {TripEvent} from "./components/trip-event";
 import {cityEvent, dateEvent, events} from "./data/event";
 import {dataMenu} from "./data/menu";
 import {render} from "./utils";
@@ -12,7 +12,7 @@ import {EventEdit} from "./components/event-edit";
 const renderEvents = (data) => {
   tripEventsList.forEach((container) => {
     data.forEach((onlyCardData) => {
-      const eventCard = new Event(onlyCardData);
+      const eventCard = new TripEvent(onlyCardData);
       const eventForm = new EventEdit(onlyCardData);
 
       eventCard.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
@@ -65,12 +65,3 @@ renderEventList(dateEvent);
 const tripEventsList = tripEventsContainer.querySelectorAll(`.trip-events__list`);
 renderEvents(events);
 updatePrice(totalPrice);
-// renderTripInfo(tripInfoSection, TripInfo, cityEvent);
-// renderMenu(tripControlsHeadings[0], TripControls, dataMenu);
-// renderFilers(tripControlsHeadings[1], TripFilters, dataFilters);
-// renderEventList(eventListTempContainer, EventList, dateEvent);
-// const tripEventsList = eventListTempContainer.querySelectorAll(`.trip-events__list`);
-// renderEventEdit(tripEventsList[0], EventEdit, events[0]);
-// renderEvents(tripEventsList, Event, events);
-// render(tripEventsSection, getTripSort() + eventListTempContainer.innerHTML);
-// pushCostSumm(costValueElement, events);

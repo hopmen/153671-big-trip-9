@@ -1,6 +1,6 @@
 import {createElement} from "../utils";
 
-export class getTripSort {
+export class TripSort {
   constructor() {
     this._element = null;
   }

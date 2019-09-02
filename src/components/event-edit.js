@@ -1,15 +1,15 @@
 import {createElement} from "../utils";
 
 export class EventEdit {
-  constructor({typeIcon, city, startTime, endTime, price, options, description, pictures}) {
-    this._typeIcon = typeIcon;
-    this._city = city;
-    this._startTime = startTime;
-    this._endTime = endTime;
-    this._price = price;
-    this._options = options;
-    this._description = description;
-    this._pictures = pictures;
+  constructor(data) {
+    this._typeIcon = data.typeIcon;
+    this._city = data.city;
+    this._startTime = data.startTime;
+    this._endTime = data.endTime;
+    this._price = data.price;
+    this._options = data.options;
+    this._description = data.description;
+    this._pictures = data.pictures;
     this._element = null;
   }
   getElement() {

@@ -1,13 +1,13 @@
 import {createElement} from "../utils";
 
-export class Event {
-  constructor({title, startTime, endTime, price, typeIcon, options}) {
-    this._title = title;
-    this._startTime = startTime;
-    this._endTime = endTime;
-    this._typeIcon = typeIcon;
-    this._price = price;
-    this._options = options;
+export class TripEvent {
+  constructor(data) {
+    this._title = data.title;
+    this._startTime = data.startTime;
+    this._endTime = data.endTime;
+    this._typeIcon = data.typeIcon;
+    this._price = data.price;
+    this._options = data.options;
     this._element = null;
   }
 
