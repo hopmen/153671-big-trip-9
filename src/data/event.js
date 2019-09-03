@@ -97,9 +97,7 @@ const getDatesData = (data) => {
     return elem.date;
   });
 
-  return datesArray.sort((a, b) => {
-    return new Date(a) - new Date(b);
-  });
+  return datesArray.sort((a, b) => a - b);
 };
 
 const cityEvent = getCitiesData(events);

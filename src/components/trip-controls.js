@@ -1,6 +1,6 @@
 import {createElement} from "../utils";
 
-export class TripInfo {
+export class TripControls {
   constructor(data) {
     this._data = data;
     this._element = null;
@@ -19,11 +19,12 @@ export class TripInfo {
 
   getTemplate() {
     return `
-      <div class="trip-info__main">
-        <h1 class="trip-info__title">${this._data.length > 3 ? `${this._data[0]} &mdash; ... &mdash; ${this._data[this._data.length - 1]}` : `${this._data.join(` &mdash; `)}`}</h1> 
-        <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
+      <div>
+        <h2 class="visually-hidden">Switch trip view</h2>
+        <nav class="trip-controls__trip-tabs  trip-tabs">
+          ${this._data.length > 0 ? this._data.map((i) => `<a class="trip-tabs__btn ${i.isActive ? `trip-tabs__btn--active` : ``}" href="#">${i.title}</a>`).join(``) : ``}
+        </nav>
       </div>
     `;
   }
-
 }
