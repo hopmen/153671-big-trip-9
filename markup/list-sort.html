@@ -18,7 +18,7 @@
         <div class="trip-main">
           <section class="trip-main__trip-info  trip-info">
             <div class="trip-info__main">
-              <h1 class="trip-info__title">Amsterdam &mdash; ... &mdash; Amsterdam</h1>
+              <h1 class="trip-info__title">Amsterdam &mdash; Geneva &mdash; Chamonix &mdash; Geneva &mdash; Amsterdam</h1>
 
               <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;21</p>
             </div>
@@ -58,6 +58,15 @@
 
           <button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>
         </div>
+
+        <form class="trip-search  trip-search--hidden" action="#" method="post">
+          <div class="trip-search__container">
+            <label class="trip-search__label" for="search-field">Trip starting point:</label>
+            <input class="trip-search__field" id="search-field" type="text" name="search-field" placeholder=" Country, city, district">
+          </div>
+
+          <button class="trip-search__btn  btn  btn--big  btn--yellow" type="submit">Start planning</button>
+        </form>
       </div>
     </header>
 
@@ -67,20 +76,17 @@
           <h2 class="visually-hidden">Trip events</h2>
 
           <form class="trip-events__trip-sort  trip-sort" action="#" method="get">
-            <span class="trip-sort__item  trip-sort__item--day">Day</span>
+            <span class="trip-sort__item  trip-sort__item--day"></span>
 
             <div class="trip-sort__item  trip-sort__item--event">
-              <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event" checked>
-              <label class="trip-sort__btn" for="sort-event">TripEvent</label>
+              <input id="sort-event" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-event">
+              <label class="trip-sort__btn" for="sort-event">Event</label>
             </div>
 
             <div class="trip-sort__item  trip-sort__item--time">
-              <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time">
-              <label class="trip-sort__btn" for="sort-time">
+              <input id="sort-time" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-time" checked>
+              <label class="trip-sort__btn  trip-sort__btn--active  trip-sort__btn--by-increase" for="sort-time">
                 Time
-                <svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
-                  <path d="M2.888 4.852V9.694H5.588V4.852L7.91 5.068L4.238 0.00999987L0.548 5.068L2.888 4.852Z"/>
-                </svg>
               </label>
             </div>
 
@@ -88,9 +94,6 @@
               <input id="sort-price" class="trip-sort__input  visually-hidden" type="radio" name="trip-sort" value="sort-price">
               <label class="trip-sort__btn" for="sort-price">
                 Price
-                <svg class="trip-sort__direction-icon" width="8" height="10" viewBox="0 0 8 10">
-                  <path d="M2.888 4.852V9.694H5.588V4.852L7.91 5.068L4.238 0.00999987L0.548 5.068L2.888 4.852Z"/>
-                </svg>
               </label>
             </div>
 
@@ -99,16 +102,13 @@
 
           <ul class="trip-days">
             <li class="trip-days__item  day">
-              <div class="day__info">
-                <span class="day__counter">1</span>
-                <time class="day__date" datetime="2019-03-18">MAR 18</time>
-              </div>
+              <div class="day__info"></div>
 
               <ul class="trip-events__list">
                 <li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="TripEvent type icon">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
                     </div>
                     <h3 class="event__title">Taxi to airport</h3>
 
@@ -143,7 +143,7 @@
                 <li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/flight.png" alt="TripEvent type icon">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/flight.png" alt="Event type icon">
                     </div>
                     <h3 class="event__title">Flight to Geneva</h3>
 
@@ -183,42 +183,7 @@
                 <li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="TripEvent type icon">
-                    </div>
-                    <h3 class="event__title">Drive to Chamonix</h3>
-
-                    <div class="event__schedule">
-                      <p class="event__time">
-                        <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
-                        &mdash;
-                        <time class="event__end-time" datetime="2019-03-18T16:05">16:05</time>
-                      </p>
-                      <p class="event__duration">1H 10M</p>
-                    </div>
-
-                    <p class="event__price">
-                      &euro;&nbsp;<span class="event__price-value">160</span>
-                    </p>
-
-                    <h4 class="visually-hidden">Offers:</h4>
-                    <ul class="event__selected-offers">
-                      <li class="event__offer">
-                        <span class="event__offer-title">Rent a car</span>
-                        &plus;
-                        &euro;&nbsp;<span class="event__offer-price">200</span>
-                       </li>
-                    </ul>
-
-                    <button class="event__rollup-btn" type="button">
-                      <span class="visually-hidden">Open event</span>
-                    </button>
-                  </div>
-                </li>
-
-                <li class="trip-events__item">
-                  <div class="event">
-                    <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/check-in.png" alt="TripEvent type icon">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/check-in.png" alt="Event type icon">
                     </div>
                     <h3 class="event__title">Check into hotel</h3>
 
@@ -248,47 +213,10 @@
                       <span class="visually-hidden">Open event</span>
                     </button>
                   </div>
-                </li>
-              </ul>
-            </li>
-
-            <li class="trip-days__item  day">
-              <div class="day__info">
-                <span class="day__counter">2</span>
-                <time class="day__date" datetime="2019-03-19">MAR 19</time>
-              </div>
-
-              <ul class="trip-events__list">
-                <li class="trip-events__item">
+                </li><li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="TripEvent type icon">
-                    </div>
-                    <h3 class="event__title">Drive to Geneva</h3>
-
-                    <div class="event__schedule">
-                      <p class="event__time">
-                        <time class="event__start-time" datetime="2019-03-19T10:00">10:00</time>
-                        &mdash;
-                        <time class="event__end-time" datetime="2019-03-19T11:00">11:00</time>
-                      </p>
-                      <p class="event__duration">1H</p>
-                    </div>
-
-                    <p class="event__price">
-                      &euro;&nbsp;<span class="event__price-value">20</span>
-                    </p>
-
-                    <button class="event__rollup-btn" type="button">
-                      <span class="visually-hidden">Open event</span>
-                    </button>
-                  </div>
-                </li>
-
-                <li class="trip-events__item">
-                  <div class="event">
-                    <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/sightseeing.png" alt="TripEvent type icon">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/sightseeing.png" alt="Event type icon">
                     </div>
                     <h3 class="event__title">Natural History Museum</h3>
 
@@ -328,7 +256,68 @@
                 <li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="TripEvent type icon">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="Event type icon">
+                    </div>
+                    <h3 class="event__title">Drive to Chamonix</h3>
+
+                    <div class="event__schedule">
+                      <p class="event__time">
+                        <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
+                        &mdash;
+                        <time class="event__end-time" datetime="2019-03-18T16:05">16:05</time>
+                      </p>
+                      <p class="event__duration">1H 10M</p>
+                    </div>
+
+                    <p class="event__price">
+                      &euro;&nbsp;<span class="event__price-value">160</span>
+                    </p>
+
+                    <h4 class="visually-hidden">Offers:</h4>
+                    <ul class="event__selected-offers">
+                      <li class="event__offer">
+                        <span class="event__offer-title">Rent a car</span>
+                        &plus;
+                        &euro;&nbsp;<span class="event__offer-price">200</span>
+                       </li>
+                    </ul>
+
+                    <button class="event__rollup-btn" type="button">
+                      <span class="visually-hidden">Open event</span>
+                    </button>
+                  </div>
+                </li>
+
+                <li class="trip-events__item">
+                  <div class="event">
+                    <div class="event__type">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="Event type icon">
+                    </div>
+                    <h3 class="event__title">Drive to Geneva</h3>
+
+                    <div class="event__schedule">
+                      <p class="event__time">
+                        <time class="event__start-time" datetime="2019-03-19T10:00">10:00</time>
+                        &mdash;
+                        <time class="event__end-time" datetime="2019-03-19T11:00">11:00</time>
+                      </p>
+                      <p class="event__duration">1H</p>
+                    </div>
+
+                    <p class="event__price">
+                      &euro;&nbsp;<span class="event__price-value">20</span>
+                    </p>
+
+                    <button class="event__rollup-btn" type="button">
+                      <span class="visually-hidden">Open event</span>
+                    </button>
+                  </div>
+                </li>
+
+                <li class="trip-events__item">
+                  <div class="event">
+                    <div class="event__type">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="Event type icon">
                     </div>
                     <h3 class="event__title">Drive to Chamonix</h3>
 
@@ -350,20 +339,11 @@
                     </button>
                   </div>
                 </li>
-              </ul>
-            </li>
 
-            <li class="trip-days__item  day">
-              <div class="day__info">
-                <span class="day__counter">3</span>
-                <time class="day__date" datetime="2019-03-18">MAR 20</time>
-              </div>
-
-              <ul class="trip-events__list">
                 <li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="TripEvent type icon">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/drive.png" alt="Event type icon">
                     </div>
                     <h3 class="event__title">Drive to airport</h3>
 
@@ -389,7 +369,7 @@
                 <li class="trip-events__item">
                   <div class="event">
                     <div class="event__type">
-                      <img class="event__type-icon" width="42" height="42" src="img/icons/flight.png" alt="TripEvent type icon">
+                      <img class="event__type-icon" width="42" height="42" src="img/icons/flight.png" alt="Event type icon">
                     </div>
                     <h3 class="event__title">Flight to Amsterdam</h3>
 
