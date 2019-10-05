@@ -1,13 +1,57 @@
-const createElement = (template) => {
-  const elementContainer = document.createElement(`div`);
-  elementContainer.innerHTML = template;
-  return elementContainer.firstElementChild;
+const monthNames = {
+  1: `JUN`,
+  2: `FEB`,
+  3: `MAR`,
+  4: `APR`,
+  5: `MAY`,
+  6: `JUN`,
+  7: `JUL`,
+  8: `AUG`,
+  9: `SEP`,
+  10: `OCT`,
+  11: `NOV`,
+  12: `DEC`
 };
 
-const render = (container, html, place) => place === `begin` ? container.prepend(html) : container.append(html);
+const Position = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`,
+  AFTER: `after`,
+  BEFORE: `before`
+};
 
-const getRandomInteger = (min, max) => Math.floor(min + Math.random() * (max + 1 - min));
+const KeyCode = {
+  ESCAPE: `Escape`,
+  ESC: `Esc`
+};
 
-const getRandomValue = (array) => array[Math.floor((Math.random() * array.length))];
+const createElement = (template) => {
+  const newElement = document.createElement(`div`);
+  newElement.innerHTML = template;
+  return newElement.firstChild;
+};
 
-export {getRandomInteger, getRandomValue, createElement, render};
+const render = (container, element, place) => {
+  switch (place) {
+    case Position.AFTERBEGIN:
+      container.prepend(element);
+      break;
+    case Position.BEFOREEND:
+      container.append(element);
+      break;
+    case Position.AFTER:
+      container.after(element);
+      break;
+    case Position.BEFORE:
+      container.before(element);
+      break;
+  }
+};
+
+const unrender = (element) => {
+  if (element) {
+    element.remove();
+  }
+};
+
+export {monthNames, Position, KeyCode, createElement, render, unrender};
