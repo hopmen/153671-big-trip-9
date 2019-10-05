@@ -4,7 +4,7 @@ import AbstractComponent from '../components/absctract-component.js';
 export default class TripInfo extends AbstractComponent {
   constructor(cards) {
     super();
-    this._cards = cards;
+    this._cards = cards.slice().sort((a, b) => a.startTime - b.startTime);
   }
 
   getRouteTemplate(cards) {

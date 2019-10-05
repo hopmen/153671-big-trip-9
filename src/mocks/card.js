@@ -97,4 +97,4 @@ const getCard = () => ({
   offers: new Set(offers)
 });
 
-export default new Array(COUNT_CARD).fill(``).map(getCard).sort((a, b) => a.startTime < b.startTime);
+export default new Array(COUNT_CARD).fill(``).map(getCard);
