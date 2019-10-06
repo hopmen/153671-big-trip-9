@@ -3,6 +3,7 @@ import Day from "../components/day.js";
 import DayList from "../components/day-list.js";
 import CardController from "../controllers/card.js";
 import {Position, render, unrender} from "../utils.js";
+import moment from 'moment';
 
 export default class TripController {
   constructor(container, cards) {
@@ -43,8 +44,26 @@ export default class TripController {
       return day;
     }, {});
 
-    Object.entries(cardEventsByDate).forEach(([date, cardsItems]) => {
-      const sortedByStartTimeCards = cardsItems.slice().sort((a, b) => b.startTime - a.startTime);
+    const cardEventsByDateSorted = Object.entries(cardEventsByDate).sort((a, b) => {
+      if (moment(a[0]).isBefore(b[0])) {
+        return -1;
+      }
+      if (moment(a[0]).isAfter(b[0])) {
+        return 1;
+      }
+      return 0;
+    });
+
+    cardEventsByDateSorted.forEach(([date, cardsItems]) => {
+      const sortedByStartTimeCards = cardsItems.slice().sort((a, b) => {
+        if (moment(a.startTime).isBefore(b.startTime)) {
+          return -1;
+        }
+        if (moment(a.startTime).isAfter(b.startTime)) {
+          return 1;
+        }
+        return 0;
+      });
       this._renderCardList(sortedByStartTimeCards, date);
     });
   }
@@ -84,7 +103,15 @@ export default class TripController {
 
     switch (evt.target.dataset.sortType) {
       case `time`:
-        const sortedByTimeCards = this._cards.slice().sort((a, b) => a.startTime - b.startTime);
+        const sortedByTimeCards = this._cards.slice().sort((a, b) => {
+          if (moment(a.startTime).isBefore(b.startTime)) {
+            return -1;
+          }
+          if (moment(a.startTime).isAfter(b.startTime)) {
+            return 1;
+          }
+          return 0;
+        });
         this._renderCardList(sortedByTimeCards);
         break;
       case `price`:
@@ -123,4 +150,5 @@ export default class TripController {
     unrender(this._dayList.getElement());
     this._dayList.removeElement();
   }
+
 }

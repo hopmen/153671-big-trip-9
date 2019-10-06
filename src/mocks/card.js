@@ -1,3 +1,4 @@
+import moment from 'moment';
 const COUNT_CARD = 5;
 const COUNT_PICTURE = 5;
 
@@ -189,8 +190,8 @@ const cities = [{
 const getCard = () => ({
   type: types[Math.floor(Math.random() * 10)],
   city: cities[Math.floor(Math.random() * 5)],
-  startTime: Date.now() - Math.floor(Math.random() * 2) * 24 * 60 * 60 * 1000 + 2 * 60 * 60 * 1000,
-  endTime: Date.now() + Math.floor(Math.random() * 2) * 24 * 60 * 60 * 1000 + 20 * 60 * 1000,
+  startTime: moment().add(Math.floor(Math.random() * 3), `d`).add(2, `h`).add(20, `m`).format(),
+  endTime: moment().add(Math.floor(Math.random() * 3), `d`).format(),
   price: 100 + Math.floor(Math.random() * 100),
 });
 

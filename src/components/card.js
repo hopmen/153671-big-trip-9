@@ -1,20 +1,21 @@
 import AbstractComponent from '../components/absctract-component.js';
+import moment from 'moment';
 
 export default class Card extends AbstractComponent {
   constructor({type, city, startTime, endTime, price}) {
     super();
     this._type = type;
     this._city = city.name;
-    this._startTime = new Date(startTime);
-    this._endTime = new Date(endTime);
+    this._startTime = startTime;
+    this._endTime = endTime;
     this._price = price;
     this._offers = this._type.offers;
   }
 
   getDuration(start, end) {
-    let minutes = Math.abs(end.getMinutes() - start.getMinutes());
-    let hours = Math.abs(end.getHours() - start.getHours());
-    let days = Math.abs(end.getDate() - start.getDate());
+    let minutes = Math.abs(moment(end).minute() - moment(start).minute());
+    let hours = Math.abs(moment(end).hour() - moment(start).hour());
+    let days = Math.abs(moment(end).date() - moment(start).date());
     days = (days < 10) ? `0${days}` : days;
     hours = (hours < 10) ? `0${hours}` : hours;
     minutes = (minutes < 10) ? `0${minutes}` : minutes;
@@ -35,12 +36,12 @@ export default class Card extends AbstractComponent {
   
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="${this._startTime.toISOString()}">
-            ${this._startTime.getHours()}:${this._startTime.getMinutes()}
+            <time class="event__start-time" datetime="${moment(this._startTime).format()}">
+            ${moment(this._startTime).format(`HH:mm`)}
             </time>
             &mdash;
-            <time class="event__end-time" datetime="${this._endTime.toISOString()}">
-            ${this._endTime.getHours()}:${this._endTime.getMinutes()}
+            <time class="event__end-time" datetime="${moment(this._endTime).format()}">
+            ${moment(this._endTime).format(`HH:mm`)}
             </time>
           </p>
           <p class="event__duration">
