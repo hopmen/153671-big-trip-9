@@ -2,21 +2,45 @@ import Sorting from "../components/sorting.js";
 import Day from "../components/day.js";
 import DayList from "../components/day-list.js";
 import CardController from "../controllers/card.js";
-import {Position, render, unrender} from "../utils.js";
+import {Position, Mode, render, unrender} from "../utils.js";
 import moment from 'moment';
 
 export default class TripController {
-  constructor(container, cards) {
+  constructor(container) {
     this._container = container;
-    this._cards = cards;
+    this._cards = [];
     this._dayList = new DayList();
     this._sorting = new Sorting();
     this._subscriptions = [];
+    this._creatingCard = null;
     this._onChangeView = this._onChangeView.bind(this);
     this._onDataChange = this._onDataChange.bind(this);
+    this._addCardBtn = document.querySelector(`.trip-main__event-add-btn`);
+
+    this._addCardBtn.addEventListener(`click`, () => {
+      this._createCard();
+    });
   }
 
-  init() {
+  hide() {
+    this._container.classList.add(`visually-hidden`);
+  }
+
+  show(cards) {
+    if (cards && cards !== this._cards) {
+      this._setCards(cards);
+      this._container.classList.remove(`visually-hidden`);
+    } else {
+      this._container.classList.remove(`visually-hidden`);
+    }
+  }
+
+  _setCards(cards) {
+    this._cards = cards;
+    this._subscriptions = [];
+    this._container.innerHTML = ``;
+    this._addCardBtn.removeAttribute(`disabled`);
+    this._clearDayList();
     if (this._cards.length) {
       render(this._container, this._sorting.getElement(), Position.BEFOREEND);
       this._renderDayList(this._cards);
@@ -27,18 +51,37 @@ export default class TripController {
     this._sorting.getElement().addEventListener(`click`, (evt) => this._onSortClick(evt));
   }
 
-  _renderDayList(cards) {
-    this._clearDayList();
+  _createCard() {
+    const defaultCard = {
+      type: {
+        id: `flight`,
+        title: `Flight`,
+        placeholder: `to`,
+      },
+      city: {},
+      startTime: moment().format(),
+      endTime: moment().format(),
+      price: ``,
+    };
 
+    const cardContainer = document.createElement(`div`);
+    render(this._sorting.getElement(), cardContainer, Position.AFTER);
+
+    this._creatingCard = new CardController(cardContainer, defaultCard, Mode.ADDING, this._onDataChange, this._onChangeView);
+    this._onChangeView();
+    this._addCardBtn.setAttribute(`disabled`, `disabled`);
+  }
+
+  _renderDayList(cards) {
     render(this._container, this._dayList.getElement(), Position.BEFOREEND);
     document.querySelector(`#sort-day`).classList.remove(`visually-hidden`);
 
 
     const cardEventsByDate = cards.reduce((day, card) => {
-      if (day[card.startTime]) {
-        day[card.startTime].push(card);
+      if (day[moment(card.startTime).format(`MM-DD-YYYY`)]) {
+        day[moment(card.startTime).format(`MM-DD-YYYY`)].push(card);
       } else {
-        day[card.startTime] = [card];
+        day[moment(card.startTime).format(`MM-DD-YYYY`)] = [card];
       }
 
       return day;
@@ -80,13 +123,22 @@ export default class TripController {
   }
 
   _renderCard(container, cardMock) {
-    const cardController = new CardController(container, cardMock, this._onDataChange, this._onChangeView);
+    const cardController = new CardController(container, cardMock, Mode.DEFAULT, this._onDataChange, this._onChangeView);
     this._subscriptions.push(cardController.setDefaultView.bind(cardController));
   }
 
   _onDataChange(newData, oldData) {
-    this._cards[this._cards.findIndex((it) => it === oldData)] = newData;
-    this._renderDayList(this._cards);
+    const index = this._cards.findIndex((card) => card === oldData);
+
+    if (newData === null) {
+      this._cards = [...this._cards.slice(0, index), ...this._cards.slice(index + 1)];
+    } else if (oldData === null) {
+      this._cards = [newData, ...this._cards];
+    } else {
+      this._cards[index] = newData;
+    }
+
+    this._setCards(this._cards);
   }
 
   _onChangeView() {

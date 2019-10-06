@@ -6,11 +6,11 @@ export default class CardEdit extends AbstractComponent {
   constructor({type, city, price}) {
     super();
     this._type = type;
-    this._city = city.name;
+    this._city = city.name || ``;
     this._price = price;
-    this._offers = this._type.offers;
-    this._pictures = city.pictures;
-    this._description = city.description;
+    this._offers = this._type.offers || [];
+    this._pictures = city.pictures || [];
+    this._description = city.description || ``;
 
     this._subscribeOnEvents();
   }
@@ -101,36 +101,38 @@ export default class CardEdit extends AbstractComponent {
         </button>
       </header>
   
-      <section class="event__details">
-          ${this._offers.length ? `
-            ${`<section class="event__section  event__section--offers">
-                  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                  <div class="event__available-offers">
-                    ${this._offers.map(({id, title, price: amount, isApplied}) => `
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" 
-                        type="checkbox" name="event-offer-${id}"
-                        ${isApplied ? `checked` : ``}>
-                        <label class="event__offer-label" for="event-offer-${id}">
-                          <span class="event__offer-title">${title}</span>
-                          &plus;
-                          &euro;&nbsp;<span class="event__offer-price">${amount}</span>
-                        </label>
-                      </div>`).join(``)}
-                  </div>
-                </section>`}` : ``}
-  
-        <section class="event__section  event__section--destination">
-          <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-          <p class="event__destination-description">${this._description}</p>
-  
-          <div class="event__photos-container">
-            <div class="event__photos-tape">
-              ${this._pictures.map((url) => `<img class="event__photo" src="${url}" alt="Event photo">`).join(``)}
-            </div>
+      ${this._city || this._offers.length !== 0 ? `
+      ${`<section class="event__details">
+      ${this._offers.length ? `
+        ${`<section class="event__section  event__section--offers">
+              <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+              <div class="event__available-offers">
+                ${this._offers.map(({id, title, price: amount, isApplied}) => `
+                  <div class="event__offer-selector">
+                    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" 
+                    type="checkbox" name="event-offer-${id}"
+                    ${isApplied ? `checked` : ``}>
+                    <label class="event__offer-label" for="event-offer-${id}">
+                      <span class="event__offer-title">${title}</span>
+                      &plus;
+                      &euro;&nbsp;<span class="event__offer-price">${amount}</span>
+                    </label>
+                  </div>`).join(``)}
+              </div>
+            </section>`}` : ``}
+
+      ${this._city ? `${`<section class="event__section  event__section--destination">
+        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${this._description}</p>
+
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${this._pictures.map((url) => `<img class="event__photo" src="${url}" alt="Event photo">`).join(``)}
           </div>
-        </section>
-      </section>
+        </div>
+      </section>`}` : ``}
+    </section>`}
+      ` : ``}
     </form>`.trim();
   }
 
@@ -154,30 +156,40 @@ export default class CardEdit extends AbstractComponent {
   }
 
   _createOffers(offers) {
-    const offersContainer = this.getElement().querySelector(`.event__section--offers`);
     const offersHTML = `<section class="event__section  event__section--offers">
-      <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-      <div class="event__available-offers">
-      ${offers.map(({id, title, price}) => `
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" 
-          type="checkbox" name="event-offer-${id}">
-          <label class="event__offer-label" for="event-offer-${id}">
-            <span class="event__offer-title">${title}</span>
-            &plus;
-            &euro;&nbsp;<span class="event__offer-price">${price}</span>
-          </label>
-        </div>`).join(``)}
-      </div>
-    </section>`;
-    if (offers.length) {
-      if (offersContainer) {
-        offersContainer.innerHTML = offersHTML;
+        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+        <div class="event__available-offers">
+        ${offers.map(({id, title, price}) => `
+          <div class="event__offer-selector">
+            <input class="event__offer-checkbox  visually-hidden" id="event-offer-${id}" 
+            type="checkbox" name="event-offer-${id}">
+            <label class="event__offer-label" for="event-offer-${id}">
+              <span class="event__offer-title">${title}</span>
+              &plus;
+              &euro;&nbsp;<span class="event__offer-price">${price}</span>
+            </label>
+          </div>`).join(``)}
+        </div>
+      </section>`;
+
+    if (this.getElement().querySelector(`.event__details`)) {
+      const offersContainer = this.getElement().querySelector(`.event__section--offers`);
+      if (offers.length) {
+        if (offersContainer) {
+          offersContainer.innerHTML = offersHTML;
+        } else {
+          this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.AFTERBEGIN, offersHTML);
+        }
       } else {
-        this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.AFTERBEGIN, offersHTML);
+        if (offersContainer) {
+          offersContainer.remove();
+        }
       }
     } else {
-      offersContainer.remove();
+      this.getElement().querySelector(`.event__header`).insertAdjacentHTML(Position.AFTEREND, `
+        <section class="event__details"></section>`
+      );
+      this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.AFTERBEGIN, offersHTML);
     }
   }
 
@@ -185,7 +197,26 @@ export default class CardEdit extends AbstractComponent {
     this.getElement()
     .querySelector(`input[name='event-destination']`).addEventListener(`change`, (evt) => {
       const city = cities[cities.findIndex((it) => it.name === evt.target.value)];
-      this.getElement().querySelector(`.event__destination-description`).innerHTML = `${city.description}`;
+      const cityHTML = `
+      <section class="event__section  event__section--destination">
+        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${city.description}</p>
+
+        <div class="event__photos-container">
+          <div class="event__photos-tape">
+            ${city.pictures.map((url) => `<img class="event__photo" src="${url}" alt="Event photo">`).join(``)}
+          </div>
+        </div>
+      </section>`;
+
+      if (this.getElement().querySelector(`.event__details`)) {
+        this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.BEFOREEND, cityHTML);
+      } else {
+        this.getElement().querySelector(`.event__header`).insertAdjacentHTML(Position.AFTEREND, `
+        <section class="event__details"></section>
+        `);
+        this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.BEFOREEND, cityHTML);
+      }
     });
   }
 }
