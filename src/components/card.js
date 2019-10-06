@@ -1,14 +1,14 @@
 import AbstractComponent from '../components/absctract-component.js';
 
 export default class Card extends AbstractComponent {
-  constructor({type, city, startTime, endTime, price, offers}) {
+  constructor({type, city, startTime, endTime, price}) {
     super();
     this._type = type;
-    this._city = city;
+    this._city = city.name;
     this._startTime = new Date(startTime);
     this._endTime = new Date(endTime);
     this._price = price;
-    this._offers = offers;
+    this._offers = this._type.offers;
   }
 
   getDuration(start, end) {
@@ -55,16 +55,16 @@ export default class Card extends AbstractComponent {
         </p>
   
         <h4 class="visually-hidden">Offers:</h4>
-        <ul class="event__selected-offers">
-          ${Array.from(this._offers).filter(({isApplied}) => isApplied).map(({title, price: amount}, i) => i < 2 ? `
-          <li class="event__offer">
-            <span class="event__offer-title">${title}</span>
-            &plus;
-            &euro;&nbsp;<span class="event__offer-price">${amount}</span>
-           </li>
-          ` : ``).join(``)}
-        </ul>
-  
+        ${this._offers.length ? `
+          ${`<ul class="event__selected-offers">
+              ${this._offers.filter(({isApplied}) => isApplied).map(({title, price: amount}, i) => i < 2 ? `
+              <li class="event__offer">
+                <span class="event__offer-title">${title}</span>
+                &plus;
+                &euro;&nbsp;<span class="event__offer-price">${amount}</span>
+              </li>
+              ` : ``).join(``)}
+            </ul>`}` : ``}
         <button class="event__rollup-btn" type="button">
           <span class="visually-hidden">Open event</span>
         </button>
