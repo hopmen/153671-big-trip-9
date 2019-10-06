@@ -8,7 +8,7 @@ export default class TripInfo extends AbstractComponent {
   }
 
   getRouteTemplate(cards) {
-    const cities = cards.map(({city}) => city);
+    const cities = cards.map(({city}) => city.name);
     const count = cities.length;
     let result;
     switch (count) {

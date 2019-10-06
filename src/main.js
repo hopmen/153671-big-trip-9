@@ -1,7 +1,7 @@
 import TripInfo from "./components/trip-info";
 import Menu from "./components/menu";
 import Filter from "./components/filter";
-import cards from "./mocks/card.js";
+import {cards} from "./mocks/card.js";
 import TripController from './controllers/trip.js';
 import {Position, render} from "./utils.js";
 

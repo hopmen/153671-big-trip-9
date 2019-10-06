@@ -14,7 +14,7 @@ export default class Day extends AbstractComponent {
         <div class="day__info">
           ${this._date !== undefined ? `
           <span class="day__counter">${new Date(+this._date).getDate()}</span>
-          <time class="day__date" datetime="${new Date(+this._date).toISOString().split(`T`)[0]}">
+          <time class="day__date" datetime="${new Date(this._date)}">
             ${monthNames[new Date(+this._date).getMonth()]}
           </time>` : ``}
         </div>
