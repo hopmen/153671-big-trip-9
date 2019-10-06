@@ -5,11 +5,11 @@ export default class Card extends AbstractComponent {
   constructor({type, city, startTime, endTime, price}) {
     super();
     this._type = type;
-    this._city = city.name;
+    this._city = city.name || ``;
     this._startTime = startTime;
     this._endTime = endTime;
     this._price = price;
-    this._offers = this._type.offers;
+    this._offers = this._type.offers || [];
   }
 
   getDuration(start, end) {

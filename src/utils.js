@@ -15,6 +15,7 @@ const monthNames = {
 
 const Position = {
   AFTERBEGIN: `afterbegin`,
+  AFTEREND: `afterend`,
   BEFOREEND: `beforeend`,
   AFTER: `after`,
   BEFORE: `before`
@@ -23,6 +24,11 @@ const Position = {
 const KeyCode = {
   ESCAPE: `Escape`,
   ESC: `Esc`
+};
+
+const Mode = {
+  ADDING: `adding`,
+  DEFAULT: `default`,
 };
 
 const createElement = (template) => {
@@ -54,4 +60,4 @@ const unrender = (element) => {
   }
 };
 
-export {monthNames, Position, KeyCode, createElement, render, unrender};
+export {monthNames, Position, Mode, KeyCode, createElement, render, unrender};
