@@ -29,7 +29,7 @@ export default class CardEdit extends AbstractComponent {
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Transfer</legend>
-              ${types.filter((type) => type.placeholder === `to`).map(({id, title}) => `
+              ${types.filter((type) => type.type === `transport`).map(({id, title}) => `
                 <div class="event__type-item">
                   <input id="event-type-${id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${id}" 
                   ${this._type.id === id ? `checked` : ``}>
@@ -40,7 +40,7 @@ export default class CardEdit extends AbstractComponent {
 
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Activity</legend>
-              ${types.filter((type) => type.placeholder === `in`).map(({id, title}) => `
+              ${types.filter((type) => type.type === `place`).map(({id, title}) => `
                 <div class="event__type-item">
                   <input id="event-type-${id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${id}"
                   ${this._type.id === id ? `checked` : ``}>
@@ -210,7 +210,12 @@ export default class CardEdit extends AbstractComponent {
       </section>`;
 
       if (this.getElement().querySelector(`.event__details`)) {
-        this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.BEFOREEND, cityHTML);
+        if (this.getElement().querySelector(`.event__section--destination`)) {
+          this.getElement().querySelector(`.event__section--destination`).remove();
+          this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.BEFOREEND, cityHTML);
+        } else {
+          this.getElement().querySelector(`.event__details`).insertAdjacentHTML(Position.BEFOREEND, cityHTML);
+        }
       } else {
         this.getElement().querySelector(`.event__header`).insertAdjacentHTML(Position.AFTEREND, `
         <section class="event__details"></section>
