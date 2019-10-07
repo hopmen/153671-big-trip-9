@@ -5,6 +5,7 @@ const COUNT_PICTURE = 5;
 const types = [{
   id: `taxi`,
   title: `Taxi`,
+  type: `transport`,
   placeholder: `to`,
   offers: [{
     id: `taxi-uber`,
@@ -21,6 +22,7 @@ const types = [{
 {
   id: `bus`,
   title: `Bus`,
+  type: `transport`,
   placeholder: `to`,
   offers: [{
     id: `bus-seat`,
@@ -37,6 +39,7 @@ const types = [{
 {
   id: `train`,
   title: `Train`,
+  type: `transport`,
   placeholder: `to`,
   offers: [{
     id: `train-luggage`,
@@ -63,6 +66,7 @@ const types = [{
 {
   id: `flight`,
   title: `Flight`,
+  type: `transport`,
   placeholder: `to`,
   offers: [{
     id: `flight-seat`,
@@ -84,12 +88,14 @@ const types = [{
 {
   id: `ship`,
   title: `Ship`,
+  type: `transport`,
   placeholder: `to`,
   offers: []
 },
 {
   id: `check-in`,
   title: `Check-in`,
+  type: `place`,
   placeholder: `in`,
   offers: [{
     id: `check-in-room`,
@@ -117,24 +123,28 @@ const types = [{
 {
   id: `transport`,
   title: `Transport`,
+  type: `transport`,
   placeholder: `to`,
   offers: []
 },
 {
   id: `drive`,
   title: `Drive`,
+  type: `transport`,
   placeholder: `to`,
   offers: []
 },
 {
   id: `sightseeing`,
   title: `Sightseeing`,
+  type: `place`,
   placeholder: `in`,
   offers: []
 },
 {
   id: `restaurant`,
   title: `Restaurant`,
+  type: `place`,
   placeholder: `in`,
   offers: [{
     id: `restaurant-table`,

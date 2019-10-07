@@ -1,6 +1,6 @@
 import Card from "../components/card.js";
 import CardEdit from "../components/card-edit.js";
-import {Position, Mode, KeyCode, render} from '../utils.js';
+import {Position, Mode, KeyCode, render, unrender} from '../utils.js';
 import {types, cities} from '../mocks/card.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
@@ -8,13 +8,14 @@ import 'flatpickr/dist/themes/light.css';
 import moment from 'moment';
 
 export default class CardController {
-  constructor(container, data, mode, onDataChange, onChangeView) {
+  constructor(container, data, mode, onDataChange, onChangeView, activateAddCardBtn) {
     this._container = container;
     this._data = data;
     this._card = new Card(data);
     this._cardEdit = new CardEdit(data);
     this._onChangeView = onChangeView;
     this._onDataChange = onDataChange;
+    this._activateAddCardBtn = activateAddCardBtn;
 
     this.init(mode);
   }
@@ -48,7 +49,9 @@ export default class CardController {
             this._container.replaceChild(this._card.getElement(), this._cardEdit.getElement());
           }
         } else if (mode === Mode.ADDING) {
+          unrender(currentView.getElement());
           currentView.removeElement();
+          this._activateAddCardBtn();
         }
         document.removeEventListener(`keydown`, onEscKeyDown);
       }
@@ -73,7 +76,13 @@ export default class CardController {
 
     this._cardEdit.getElement().querySelector(`.event__reset-btn`)
       .addEventListener(`click`, () => {
-        this._onDataChange(null, this._data);
+        if (mode === Mode.DEFAULT) {
+          this._onDataChange(null, this._data);
+        } else if (mode === Mode.ADDING) {
+          unrender(currentView.getElement());
+          currentView.removeElement();
+          this._activateAddCardBtn();
+        }
       });
 
     this._cardEdit.getElement()

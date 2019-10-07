@@ -1,17 +1,4 @@
-const monthNames = {
-  1: `JUN`,
-  2: `FEB`,
-  3: `MAR`,
-  4: `APR`,
-  5: `MAY`,
-  6: `JUN`,
-  7: `JUL`,
-  8: `AUG`,
-  9: `SEP`,
-  10: `OCT`,
-  11: `NOV`,
-  12: `DEC`
-};
+import moment from 'moment';
 
 const Position = {
   AFTERBEGIN: `afterbegin`,
@@ -60,4 +47,29 @@ const unrender = (element) => {
   }
 };
 
-export {monthNames, Position, Mode, KeyCode, createElement, render, unrender};
+const getDurationString = (start, end) => {
+  let startMoment = moment(start);
+  let endMoment = moment(end);
+  let diff = endMoment.diff(startMoment);
+  let duration = ``;
+  let minutes = Math.abs(moment.duration(diff).minutes());
+  let hours = Math.abs(moment.duration(diff).hours());
+  let days = Math.abs(moment.duration(diff).days());
+  days = (days < 10) ? `0${days}` : days;
+  hours = (hours < 10) ? `0${hours}` : hours;
+  minutes = (minutes < 10) ? `0${minutes}` : minutes;
+
+  if (days === `00`) {
+    duration = `${hours}H ${minutes}M`;
+  } else if (hours === `00`) {
+    duration = `${days}D ${minutes}M`;
+  } else if (minutes === `00`) {
+    duration = `${days}D ${hours}H`;
+  } else {
+    duration = `${days}D ${hours}H ${minutes}M`;
+  }
+
+  return duration;
+};
+
+export {Position, Mode, KeyCode, getDurationString, createElement, render, unrender};

@@ -2,9 +2,13 @@ import AbstractComponent from '../components/absctract-component.js';
 import moment from 'moment';
 
 export default class TripInfo extends AbstractComponent {
-  constructor(cards) {
+  constructor() {
     super();
-    this._cards = cards.slice().sort((a, b) => a.startTime - b.startTime);
+    this._cards = [];
+  }
+
+  create(cards) {
+    this._cards = cards;
   }
 
   getRouteTemplate(cards) {
