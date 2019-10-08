@@ -1,29 +1,16 @@
 import AbstractComponent from '../components/absctract-component.js';
 import moment from 'moment';
+import {getDurationString} from "../utils.js";
 
 export default class Card extends AbstractComponent {
   constructor({type, city, startTime, endTime, price}) {
     super();
     this._type = type;
-    this._city = city.name || ``;
+    this._city = city.name;
     this._startTime = startTime;
     this._endTime = endTime;
     this._price = price;
-    this._offers = this._type.offers || [];
-  }
-
-  getDuration(start, end) {
-    let minutes = Math.abs(moment(end).minute() - moment(start).minute());
-    let hours = Math.abs(moment(end).hour() - moment(start).hour());
-    let days = Math.abs(moment(end).date() - moment(start).date());
-    days = (days < 10) ? `0${days}` : days;
-    hours = (hours < 10) ? `0${hours}` : hours;
-    minutes = (minutes < 10) ? `0${minutes}` : minutes;
-    return {
-      days,
-      hours,
-      minutes
-    };
+    this._offers = this._type.offers;
   }
 
   getTemplate() {
@@ -45,9 +32,7 @@ export default class Card extends AbstractComponent {
             </time>
           </p>
           <p class="event__duration">
-          ${this.getDuration(this._endTime, this._startTime).days !== `00` ? `${this.getDuration(this._endTime, this._startTime).days}D` : ``}
-          ${this.getDuration(this._endTime, this._startTime).hours !== `00` ? `${this.getDuration(this._endTime, this._startTime).hours}H` : ``}
-          ${this.getDuration(this._endTime, this._startTime).minutes !== `00` ? `${this.getDuration(this._endTime, this._startTime).minutes}M` : ``}
+          ${getDurationString(this._startTime, this._endTime)}
           </p>
         </div>
   
@@ -58,7 +43,7 @@ export default class Card extends AbstractComponent {
         <h4 class="visually-hidden">Offers:</h4>
         ${this._offers.length ? `
           ${`<ul class="event__selected-offers">
-              ${this._offers.filter(({isApplied}) => isApplied).map(({title, price: amount}, i) => i < 2 ? `
+              ${this._offers.filter(({accepted}) => accepted).map(({title, price: amount}, i) => i < 2 ? `
               <li class="event__offer">
                 <span class="event__offer-title">${title}</span>
                 &plus;
