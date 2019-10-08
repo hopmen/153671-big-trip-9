@@ -12,16 +12,23 @@ export default class StatisticsController {
     this._moneyChart = {};
     this._transportChart = {};
     this._timeChart = {};
-
-    this.create();
   }
 
-  create() {
+  create(cards) {
+    this._cards = cards;
+
     render(this._container, this._statistics.getElement(), Position.BEFOREEND);
   }
 
-  show(cards) {
+  updateData(cards) {
     this._cards = cards;
+
+    this._chartMoneyInit();
+    this._chartTransportInit();
+    this._chartTimeInit();
+  }
+
+  show() {
     this._chartMoneyInit();
     this._chartTransportInit();
     this._chartTimeInit();

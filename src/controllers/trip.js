@@ -2,6 +2,7 @@ import Sorting from "../components/sorting.js";
 import Day from "../components/day.js";
 import DayList from "../components/day-list.js";
 import CardController from "../controllers/card.js";
+import {types} from '../models/model-types.js';
 import {Position, Mode, render, unrender} from "../utils.js";
 import moment from 'moment';
 
@@ -14,9 +15,8 @@ export default class TripController {
     this._subscriptions = [];
     this._creatingCard = null;
     this._onChangeView = this._onChangeView.bind(this);
-    this._onDataChange = this._onDataChange.bind(this);
+    this._onDataChange = onDataChange;
     this._activateAddCardBtn = this._activateAddCardBtn.bind(this);
-    this._onDataChangeMain = onDataChange;
     this._addCardBtn = document.querySelector(`.trip-main__event-add-btn`);
 
     this._addCardBtn.addEventListener(`click`, () => {
@@ -63,15 +63,12 @@ export default class TripController {
 
   _createCard() {
     const defaultCard = {
-      type: {
-        id: `flight`,
-        title: `Flight`,
-        placeholder: `to`,
-      },
+      type: types[0],
       city: {},
       startTime: moment().format(),
       endTime: moment().format(),
-      price: ``,
+      price: 0,
+      isFavorite: false
     };
 
     const cardContainer = document.createElement(`div`);
@@ -137,21 +134,6 @@ export default class TripController {
     this._subscriptions.push(cardController.setDefaultView.bind(cardController));
   }
 
-  _onDataChange(newData, oldData) {
-    const index = this._cards.findIndex((card) => card === oldData);
-
-    if (newData === null) {
-      this._cards = [...this._cards.slice(0, index), ...this._cards.slice(index + 1)];
-    } else if (oldData === null) {
-      this._cards = [newData, ...this._cards];
-    } else {
-      this._cards[index] = newData;
-    }
-
-    this._setCards(this._cards);
-    this._onDataChangeMain(this._cards);
-  }
-
   _onChangeView() {
     this._subscriptions.forEach((it) => it());
   }
@@ -196,7 +178,7 @@ export default class TripController {
       return sum + current;
     }, 0);
     const allOffers = cardsItems.map(({type}) => type.offers);
-    const appliedOffers = allOffers.map((item) => item.filter(({isApplied}) => isApplied));
+    const appliedOffers = allOffers.map((item) => item.filter(({accepted}) => accepted));
     const offersPrices = appliedOffers.map((items) => items.map((item) => item.price));
     const offersPricesTotals = offersPrices.map((prices) => prices.reduce((sum, current) => {
       return sum + current;
