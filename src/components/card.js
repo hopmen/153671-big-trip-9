@@ -6,11 +6,11 @@ export default class Card extends AbstractComponent {
   constructor({type, city, startTime, endTime, price}) {
     super();
     this._type = type;
-    this._city = city.name || ``;
+    this._city = city.name;
     this._startTime = startTime;
     this._endTime = endTime;
     this._price = price;
-    this._offers = this._type.offers || [];
+    this._offers = this._type.offers;
   }
 
   getTemplate() {
@@ -43,7 +43,7 @@ export default class Card extends AbstractComponent {
         <h4 class="visually-hidden">Offers:</h4>
         ${this._offers.length ? `
           ${`<ul class="event__selected-offers">
-              ${this._offers.filter(({isApplied}) => isApplied).map(({title, price: amount}, i) => i < 2 ? `
+              ${this._offers.filter(({accepted}) => accepted).map(({title, price: amount}, i) => i < 2 ? `
               <li class="event__offer">
                 <span class="event__offer-title">${title}</span>
                 &plus;

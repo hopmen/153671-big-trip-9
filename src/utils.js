@@ -18,6 +18,12 @@ const Mode = {
   DEFAULT: `default`,
 };
 
+const Action = {
+  CREATE: `create`,
+  DELETE: `delete`,
+  UPDATE: `update`
+};
+
 const createElement = (template) => {
   const newElement = document.createElement(`div`);
   newElement.innerHTML = template;
@@ -72,4 +78,4 @@ const getDurationString = (start, end) => {
   return duration;
 };
 
-export {Position, Mode, KeyCode, getDurationString, createElement, render, unrender};
+export {Position, Mode, KeyCode, Action, getDurationString, createElement, render, unrender};
