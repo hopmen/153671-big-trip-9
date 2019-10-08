@@ -135,6 +135,7 @@ export default class CardEdit extends AbstractComponent {
     </form>`.trim();
   }
 
+
   block() {
     this.getElement().querySelectorAll(`input, button`).forEach((element) => element.setAttribute(`disabled`, `disabled`));
   }

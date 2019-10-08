@@ -1,6 +1,8 @@
 import Card from "../components/card.js";
 import CardEdit from "../components/card-edit.js";
+
 import {Position, Mode, KeyCode, Action, ButtonText, render, unrender} from '../utils.js';
+
 import {types} from '../models/model-types.js';
 import {allDestinations, allOffers} from '../main.js';
 import flatpickr from 'flatpickr';
@@ -97,7 +99,6 @@ export default class CardController {
             it.isApplied = false;
           }
         });
-
         this._onDataChange(mode === Mode.DEFAULT ? Action.UPDATE : Action.CREATE, this._data, this._cardEdit);
         document.removeEventListener(`keydown`, onEscKeyDown);
       });
@@ -129,6 +130,7 @@ export default class CardController {
       dateFormat: `Y.m.d H:i`,
       defaultDate: this._data.endTime,
       minDate: this._data.startTime
+
     });
   }
 }

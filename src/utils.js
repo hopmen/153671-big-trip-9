@@ -24,6 +24,7 @@ const Action = {
   UPDATE: `update`
 };
 
+
 const ButtonText = {
   SAVING: `Saving....`,
   DELETING: `Deleting....`,
@@ -85,5 +86,6 @@ const getDurationString = (start, end) => {
 
   return duration;
 };
+
 
 export {Position, Mode, KeyCode, Action, ButtonText, getDurationString, createElement, render, unrender};

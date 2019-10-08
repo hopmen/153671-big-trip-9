@@ -26,6 +26,7 @@ export default class StatisticsController {
     this._updateChartData(this._moneyChart, this._getMoneyData());
     this._updateChartData(this._transportChart, this._getTransportData());
     this._updateChartData(this._timeChart, this._getTimeData());
+
   }
 
   show() {
@@ -54,6 +55,7 @@ export default class StatisticsController {
         labels: this._getMoneyData().labels,
         datasets: [{
           data: this._getMoneyData().data,
+
           backgroundColor: `#fff`,
         }]
       },
@@ -110,6 +112,7 @@ export default class StatisticsController {
   _chartTransportInit() {
     const transportCtx = this._statistics.getElement().querySelector(`.statistics__chart--transport`);
 
+
     this._transportChart = new Chart(transportCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
@@ -117,6 +120,7 @@ export default class StatisticsController {
         labels: this._getTransportData().labels,
         datasets: [{
           data: this._getTransportData().data,
+
           backgroundColor: `#fff`,
         }]
       },
@@ -170,6 +174,7 @@ export default class StatisticsController {
   _chartTimeInit() {
     const timeCtx = this._statistics.getElement().querySelector(`.statistics__chart--time`);
 
+
     this._timeChart = new Chart(timeCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
@@ -177,6 +182,7 @@ export default class StatisticsController {
         labels: this._getTimeData().labels,
         datasets: [{
           data: this._getTimeData().data,
+
           backgroundColor: `#fff`,
         }]
       },
@@ -296,4 +302,5 @@ export default class StatisticsController {
       data: durations
     };
   }
+
 }

@@ -49,15 +49,18 @@ export default class TripController {
 
   _renderCards(cards) {
     this._container.innerHTML = ``;
+
     this._clearSorting();
     this._clearDayList();
     if (cards.length) {
       render(this._container, this._sorting.getElement(), Position.BEFOREEND);
       this._sorting.getElement().addEventListener(`click`, (evt) => this._onSortClick(evt, cards));
+
       this._renderDayList(cards);
     } else {
       this._renderEmptyMessage();
     }
+
   }
 
   _createCard() {
@@ -77,11 +80,13 @@ export default class TripController {
     const cardContainer = document.createElement(`div`);
     const tripContainer = document.querySelector(`.trip-events`);
 
+
     if (this._cards.length) {
       render(this._sorting.getElement(), cardContainer, Position.AFTER);
     } else {
       render(tripContainer, cardContainer, Position.BEFOREEND);
     }
+
 
     this._creatingCard = new CardController(cardContainer, defaultCard, Mode.ADDING, this._onDataChange, this._onChangeView, this._activateAddCardBtn);
     this._onChangeView();
@@ -143,6 +148,7 @@ export default class TripController {
     this._subscriptions.push(cardController.setDefaultView.bind(cardController));
   }
 
+
   _activateAddCardBtn() {
     this._addCardBtn.removeAttribute(`disabled`);
   }
@@ -180,6 +186,7 @@ export default class TripController {
     this._sorting.removeElement();
   }
 
+
   _onChangeView() {
     this._subscriptions.forEach((it) => it());
   }
@@ -188,6 +195,7 @@ export default class TripController {
     this._addCardBtn.addEventListener(`click`, () => {
       this._createCard();
     });
+
   }
 
   _onSortClick(evt, cards) {
@@ -220,4 +228,5 @@ export default class TripController {
         break;
     }
   }
+
 }
