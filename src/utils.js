@@ -1,4 +1,5 @@
 import moment from 'moment';
+import DOMPurify from 'dompurify';
 
 const Position = {
   AFTERBEGIN: `afterbegin`,
@@ -7,6 +8,20 @@ const Position = {
   AFTER: `after`,
   BEFORE: `before`
 };
+const Months = [
+  `JAN`,
+  `FEB`,
+  `MAR`,
+  `APR`,
+  `MAY`,
+  `JUNE`,
+  `JULY`,
+  `AUG`,
+  `SEPT`,
+  `OCT`,
+  `NOV`,
+  `DEC`,
+];
 
 const KeyCode = {
   ESCAPE: `Escape`,
@@ -34,7 +49,7 @@ const ButtonText = {
 
 const createElement = (template) => {
   const newElement = document.createElement(`div`);
-  newElement.innerHTML = template;
+  newElement.innerHTML = DOMPurify.sanitize(template);
   return newElement.firstChild;
 };
 
@@ -100,4 +115,4 @@ const sortMomentDates = (a, b) => {
   return 0;
 };
 
-export {Position, Mode, KeyCode, Action, ButtonText, getDuration, getDurationString, sortMomentDates, createElement, render, unrender};
+export {Position, Mode, KeyCode, Action, ButtonText, Months, getDuration, getDurationString, sortMomentDates, createElement, render, unrender};

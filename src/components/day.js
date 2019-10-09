@@ -1,5 +1,5 @@
 import AbstractComponent from './abstract-component.js';
-import moment from 'moment';
+import {Months} from '../utils';
 
 export default class Day extends AbstractComponent {
   constructor(cards, date) {
@@ -13,9 +13,9 @@ export default class Day extends AbstractComponent {
       <li class="trip-days__item  day">
         <div class="day__info">
           ${this._date !== undefined ? `
-          <span class="day__counter">${moment(this._date).format(`D`)}</span>
-          <time class="day__date" datetime="${moment(this._date).format(`YYYY-MM-DD`)}">
-            ${moment(this._date).format(`MMM`)}
+          <span class="day__counter">${new Date(this._date).getDay()}</span>
+          <time class="day__date" datetime="${new Date(this._date).toISOString().substring(0, 10)}">
+            ${Months[new Date(this._date).getMonth()]}
           </time>` : ``}
         </div>
         <ul class="trip-events__list">

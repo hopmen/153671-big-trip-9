@@ -1,7 +1,7 @@
 export default class ModelOffer {
-  constructor(data) {
-    this.type = data[`type`];
-    this.offers = data[`offers`].map((offer) => {
+  constructor(transportOffers) {
+    this.type = transportOffers[`type`];
+    this.offers = transportOffers[`offers`].map((offer) => {
       return {
         id: offer.name.toLowerCase().replace(/\s+/g, ``),
         title: offer.name,
@@ -10,11 +10,11 @@ export default class ModelOffer {
     });
   }
 
-  static parseOffer(data) {
-    return new ModelOffer(data);
+  static parseOffer(offer) {
+    return new ModelOffer(offer);
   }
 
-  static parseOffers(data) {
-    return data.map(ModelOffer.parseOffer);
+  static parseOffers(offers) {
+    return offers.map(ModelOffer.parseOffer);
   }
 }

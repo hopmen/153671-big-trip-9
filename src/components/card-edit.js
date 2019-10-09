@@ -2,6 +2,7 @@ import AbstractComponent from './abstract-component.js';
 import {types} from '../models/model-types.js';
 import {Position} from '../utils.js';
 import {allDestinations, allOffers} from '../main.js';
+import DOMPurify from 'dompurify';
 
 export default class CardEdit extends AbstractComponent {
   constructor({id, type, city, price, isFavorite}) {
@@ -198,7 +199,7 @@ export default class CardEdit extends AbstractComponent {
   }
 
   _createCitiesDatalist() {
-    this.getElement().querySelector(`#destination-list-${this._id}`).innerHTML = allDestinations.map(({name}) => `<option value="${name}"></option>`).join(``);
+    this.getElement().querySelector(`#destination-list-${this._id}`).innerHTML = DOMPurify.sanitize(allDestinations.map(({name}) => `<option value="${name}"></option>`).join(``));
   }
 
   _createOffers(offers) {
@@ -258,7 +259,7 @@ export default class CardEdit extends AbstractComponent {
   _onTypeClick(evt) {
     if (evt.target.value) {
       const type = types[types.findIndex((it) => it.id === evt.target.value)];
-      this.getElement().querySelector(`.event__label`).innerHTML = `${type.title} ${type.placeholder}`;
+      this.getElement().querySelector(`.event__label`).innerHTML = DOMPurify.sanitize(`${type.title} ${type.placeholder}`);
       this.getElement().querySelector(`.event__type-icon`).src = `img/icons/${type.id}.png`;
       const typeOffers = allOffers.find(({type: offersType}) => offersType === type.id).offers;
       this._createOffers(typeOffers);
