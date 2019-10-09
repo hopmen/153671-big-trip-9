@@ -11,9 +11,8 @@ import ModelCard from "./models/model-card.js";
 
 const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
 const END_POINT = `https://htmlacademy-es-9.appspot.com/big-trip`;
-const CARDS_STORE_KEY = `cards-store-key`;
 const api = new API({endPoint: END_POINT, authorization: AUTHORIZATION});
-const store = new Store({key: CARDS_STORE_KEY, storage: localStorage});
+const store = new Store({storage: localStorage});
 const provider = new Provider({api, store, generateId: () => String(Date.now() + Math.random())});
 
 const tripInfoContainer = document.querySelector(`.trip-info`);
@@ -150,8 +149,7 @@ window.addEventListener(`offline`, () => {
 });
 window.addEventListener(`online`, () => {
   document.title = document.title.split(`[OFFLINE]`)[0];
-  provider.syncTasks();
+  provider.syncCards();
 });
-
 
 export {allDestinations, allOffers};

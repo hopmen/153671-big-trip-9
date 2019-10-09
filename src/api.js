@@ -44,6 +44,16 @@ export default class API {
       .then(ModelCard.parseCards);
   }
 
+  syncCards(cards) {
+    return this._load({
+      url: `points/sync`,
+      method: `POST`,
+      body: JSON.stringify(cards),
+      headers: new Headers({'Content-Type': `application/json`})
+    })
+      .then(toJSON);
+  }
+
   createCard({data}) {
     return this._load({
       url: `points`,

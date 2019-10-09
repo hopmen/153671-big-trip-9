@@ -1,31 +1,30 @@
 export default class Store {
-  constructor({key, storage}) {
+  constructor({storage}) {
     this._storage = storage;
-    this._storeKey = key;
   }
 
-  setItem({key, item}) {
-    const items = this.getAll();
+  setItem(storeKey, {key, item}) {
+    const items = this.getAll(storeKey);
     items[key] = item;
 
-    this._storage.setItem(this._storeKey, JSON.stringify(items));
+    this._storage.setItem(storeKey, JSON.stringify(items));
   }
 
-  removeItem({key}) {
-    const items = this.getAll();
+  removeItem(storeKey, {key}) {
+    const items = this.getAll(storeKey);
     delete items[key];
 
-    this._storage.setItem(this._storeKey, JSON.stringify(items));
+    this._storage.setItem(storeKey, JSON.stringify(items));
   }
 
-  getItem({key}) {
-    const items = this.getAll();
+  getItem(storeKey, {key}) {
+    const items = this.getAll(storeKey);
     return items[key];
   }
 
-  getAll() {
+  getAll(storeKey) {
     const emptyItems = {};
-    const items = this._storage.getItem(this._storeKey);
+    const items = this._storage.getItem(storeKey);
 
     if (!items) {
       return emptyItems;
@@ -34,7 +33,6 @@ export default class Store {
     try {
       return JSON.parse(items);
     } catch (e) {
-      console.error(`Error parse items. Error: ${e}. Items: ${items}`);
       return emptyItems;
     }
   }

@@ -1,11 +1,12 @@
-import AbstractComponent from '../components/absctract-component.js';
+import AbstractComponent from './abstract-component.js';
 import {types} from '../models/model-types.js';
 import {Position} from '../utils.js';
 import {allDestinations, allOffers} from '../main.js';
 
 export default class CardEdit extends AbstractComponent {
-  constructor({type, city, price, isFavorite}) {
+  constructor({id, type, city, price, isFavorite}) {
     super();
+    this._id = id;
     this._type = type;
     this._city = city.name;
     this._price = price;
@@ -22,20 +23,20 @@ export default class CardEdit extends AbstractComponent {
     <form class="event  event--edit" action="#" method="post">
       <header class="event__header">
         <div class="event__type-wrapper">
-          <label class="event__type  event__type-btn" for="event-type-toggle-1">
+          <label class="event__type  event__type-btn" for="event-type-toggle-${this._id}">
             <span class="visually-hidden">Choose event type</span>
             <img class="event__type-icon" width="17" height="17" src="img/icons/${this._type.id}.png" alt="Event type icon">
           </label>
-          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+          <input class="event__type-toggle  visually-hidden" id="event-type-toggle-${this._id}" type="checkbox">
 
           <div class="event__type-list">
             <fieldset class="event__type-group">
               <legend class="visually-hidden">Transfer</legend>
               ${types.filter((type) => type.type === `transport`).map(({id, title}) => `
                 <div class="event__type-item">
-                  <input id="event-type-${id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${id}" 
+                  <input id="event-type-${id}-${this._id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${id}" 
                   ${this._type.id === id ? `checked` : ``}>
-                  <label class="event__type-label  event__type-label--${id}" for="event-type-${id}-1">${title}</label>
+                  <label class="event__type-label  event__type-label--${id}" for="event-type-${id}-${this._id}">${title}</label>
                 </div>
               `).join(``)}
             </fieldset>
@@ -44,9 +45,9 @@ export default class CardEdit extends AbstractComponent {
               <legend class="visually-hidden">Activity</legend>
               ${types.filter((type) => type.type === `place`).map(({id, title}) => `
                 <div class="event__type-item">
-                  <input id="event-type-${id}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${id}"
+                  <input id="event-type-${id}-${this._id}" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${id}"
                   ${this._type.id === id ? `checked` : ``}>
-                  <label class="event__type-label  event__type-label--${id}" for="event-type-${id}-1">${title}</label>
+                  <label class="event__type-label  event__type-label--${id}" for="event-type-${id}-${this._id}">${title}</label>
                 </div>
               `).join(``)}
             </fieldset>
@@ -54,40 +55,40 @@ export default class CardEdit extends AbstractComponent {
         </div>
   
         <div class="event__field-group  event__field-group--destination">
-          <label class="event__label  event__type-output" for="event-destination-1">
+          <label class="event__label  event__type-output" for="event-destination-${this._id}">
             ${this._type.title} ${this._type.placeholder}
           </label>
-          <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${this._city ? this._city : ``}" list="destination-list-1">
-          <datalist id="destination-list-1"></datalist>
+          <input class="event__input  event__input--destination" id="event-destination-${this._id}" type="text" name="event-destination" value="${this._city ? this._city : ``}" list="destination-list-${this._id}">
+          <datalist id="destination-list-${this._id}"></datalist>
         </div>
   
         <div class="event__field-group  event__field-group--time">
-          <label class="visually-hidden" for="event-start-time-1">
+          <label class="visually-hidden" for="event-start-time-${this._id}">
             From
           </label>
-          <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time"
+          <input class="event__input  event__input--time" id="event-start-time-${this._id}" type="text" name="event-start-time"
            value="">
           &mdash;
-          <label class="visually-hidden" for="event-end-time-1">
+          <label class="visually-hidden" for="event-end-time-${this._id}">
             To
           </label>
-          <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" 
+          <input class="event__input  event__input--time" id="event-end-time-${this._id}" type="text" name="event-end-time" 
           value="">
         </div>
   
         <div class="event__field-group  event__field-group--price">
-          <label class="event__label" for="event-price-1">
+          <label class="event__label" for="event-price-${this._id}">
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${this._price}">
+          <input class="event__input  event__input--price" id="event-price-${this._id}" type="text" name="event-price" value="${this._price}">
         </div>
   
         <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
         <button class="event__reset-btn" type="reset">Delete</button>
   
-        <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite"  ${this._isFavorite ? `checked` : ``}>
-        <label class="event__favorite-btn" for="event-favorite-1">
+        <input id="event-favorite-${this._id}" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite"  ${this._isFavorite ? `checked` : ``}>
+        <label class="event__favorite-btn" for="event-favorite-${this._id}">
           <span class="visually-hidden">Add to favorite</span>
           <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
             <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -197,8 +198,7 @@ export default class CardEdit extends AbstractComponent {
   }
 
   _createCitiesDatalist() {
-    const datalistHTML = allDestinations.map(({name}) => `<option value="${name}"></option>`).join(``);
-    this.getElement().querySelector(`#destination-list-1`).innerHTML = datalistHTML;
+    this.getElement().querySelector(`#destination-list-${this._id}`).innerHTML = allDestinations.map(({name}) => `<option value="${name}"></option>`).join(``);
   }
 
   _createOffers(offers) {

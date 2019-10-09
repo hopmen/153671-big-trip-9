@@ -1,4 +1,4 @@
-import AbstractComponent from '../components/absctract-component.js';
+import AbstractComponent from './abstract-component.js';
 import moment from 'moment';
 import {getDurationString} from "../utils.js";
 

@@ -1,4 +1,4 @@
-import AbstractComponent from '../components/absctract-component.js';
+import AbstractComponent from './abstract-component.js';
 
 export default class Menu extends AbstractComponent {
   constructor() {
