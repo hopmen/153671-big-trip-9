@@ -1,5 +1,5 @@
 import TripInfo from "../components/trip-info.js";
-import {Position, render, unrender} from "../utils.js";
+import {Position, render, unrender, sortMomentDates} from "../utils.js";
 
 export default class TripInfoController {
   constructor(container) {
@@ -9,7 +9,7 @@ export default class TripInfoController {
   }
 
   create(cards) {
-    this._cards = cards.slice().sort((a, b) => a.startTime - b.startTime);
+    this._cards = cards.slice().sort((a, b) => sortMomentDates(a.startTime, b.startTime));
     this._tripInfo.create(this._cards);
     render(this._container, this._tripInfo.getElement(), Position.AFTERBEGIN);
   }
@@ -17,7 +17,7 @@ export default class TripInfoController {
   updateData(cards) {
     unrender(this._tripInfo.getElement());
     this._tripInfo.removeElement();
-    this._cards = cards.slice().sort((a, b) => a.startTime - b.startTime);
+    this._cards = cards.slice().sort((a, b) => sortMomentDates(a.startTime, b.startTime));
     this.create(this._cards);
   }
 }

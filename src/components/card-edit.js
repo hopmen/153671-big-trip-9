@@ -14,8 +14,7 @@ export default class CardEdit extends AbstractComponent {
     this._description = city.description;
     this._isFavorite = isFavorite;
 
-    this._subscribeOnEvents();
-    this._createCitiesDatalist();
+    this.create();
   }
 
   getTemplate() {
@@ -135,6 +134,10 @@ export default class CardEdit extends AbstractComponent {
     </form>`.trim();
   }
 
+  create() {
+    this._subscribeOnEvents();
+    this._createCitiesDatalist();
+  }
 
   block() {
     this.getElement().querySelectorAll(`input, button`).forEach((element) => element.setAttribute(`disabled`, `disabled`));
@@ -171,38 +174,31 @@ export default class CardEdit extends AbstractComponent {
     }
   }
 
+  _displayDetails(element, position, html) {
+    const detailsContainer = this.getElement().querySelector(`.event__details`);
+    const renderElement = () => {
+      this.getElement().querySelector(`.event__details`).insertAdjacentHTML(position, html);
+    };
+    const createElement = () => {
+      if (element) {
+        element.remove();
+        renderElement();
+      } else {
+        renderElement();
+      }
+    };
+
+    if (detailsContainer) {
+      createElement();
+    } else {
+      this.getElement().querySelector(`.event__header`).insertAdjacentHTML(Position.AFTEREND, `<section class="event__details"></section>`);
+      createElement();
+    }
+  }
+
   _createCitiesDatalist() {
     const datalistHTML = allDestinations.map(({name}) => `<option value="${name}"></option>`).join(``);
     this.getElement().querySelector(`#destination-list-1`).innerHTML = datalistHTML;
-  }
-
-  _subscribeOnEvents() {
-    this._onTypeSelect();
-    this._onCitySelect();
-    this._onFocus();
-  }
-
-  _onFocus() {
-    this.getElement().querySelectorAll(`input`).forEach((element) => {
-      element.addEventListener(`focus`, () => {
-        this._displayError(false);
-      });
-    });
-  }
-
-  _onTypeSelect() {
-    this.getElement()
-    .querySelectorAll(`.event__type-group`).forEach((element) => {
-      element.addEventListener(`click`, (evt) => {
-        if (evt.target.value) {
-          const type = types[types.findIndex((it) => it.id === evt.target.value)];
-          this.getElement().querySelector(`.event__label`).innerHTML = `${type.title} ${type.placeholder}`;
-          this.getElement().querySelector(`.event__type-icon`).src = `img/icons/${type.id}.png`;
-          const typeOffers = allOffers.find(({type: offersType}) => offersType === type.id).offers;
-          this._createOffers(typeOffers);
-        }
-      });
-    });
   }
 
   _createOffers(offers) {
@@ -231,14 +227,6 @@ export default class CardEdit extends AbstractComponent {
     }
   }
 
-  _onCitySelect() {
-    this.getElement()
-    .querySelector(`input[name='event-destination']`).addEventListener(`change`, (evt) => {
-      const city = allDestinations[allDestinations.findIndex((it) => it.name === evt.target.value)];
-      this._createCity(city);
-    });
-  }
-
   _createCity(city) {
     const cityHTML = `
       <section class="event__section  event__section--destination">
@@ -257,25 +245,28 @@ export default class CardEdit extends AbstractComponent {
     this._displayDetails(cityContainer, Position.BEFOREEND, cityHTML);
   }
 
-  _displayDetails(element, position, html) {
-    const detailsContainer = this.getElement().querySelector(`.event__details`);
-    const renderElement = () => {
-      this.getElement().querySelector(`.event__details`).insertAdjacentHTML(position, html);
-    };
-    const createElement = () => {
-      if (element) {
-        element.remove();
-        renderElement();
-      } else {
-        renderElement();
-      }
-    };
+  _subscribeOnEvents() {
+    this.getElement().querySelectorAll(`.event__type-group`).forEach((element) => element.addEventListener(`click`, this._onTypeClick.bind(this)));
+    this.getElement().querySelector(`input[name='event-destination']`).addEventListener(`change`, this._onCityInputChange.bind(this));
+    this.getElement().querySelectorAll(`input`).forEach((element) => element.addEventListener(`focus`, this._onInputsFocus.bind(this)));
+  }
 
-    if (detailsContainer) {
-      createElement();
-    } else {
-      this.getElement().querySelector(`.event__header`).insertAdjacentHTML(Position.AFTEREND, `<section class="event__details"></section>`);
-      createElement();
+  _onInputsFocus() {
+    this._displayError(false);
+  }
+
+  _onTypeClick(evt) {
+    if (evt.target.value) {
+      const type = types[types.findIndex((it) => it.id === evt.target.value)];
+      this.getElement().querySelector(`.event__label`).innerHTML = `${type.title} ${type.placeholder}`;
+      this.getElement().querySelector(`.event__type-icon`).src = `img/icons/${type.id}.png`;
+      const typeOffers = allOffers.find(({type: offersType}) => offersType === type.id).offers;
+      this._createOffers(typeOffers);
     }
+  }
+
+  _onCityInputChange(evt) {
+    const city = allDestinations[allDestinations.findIndex((it) => it.name === evt.target.value)];
+    this._createCity(city);
   }
 }

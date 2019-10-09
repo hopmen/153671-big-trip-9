@@ -1,6 +1,6 @@
 import AbstractComponent from '../components/absctract-component.js';
 
-export default class Day extends AbstractComponent {
+export default class Statistics extends AbstractComponent {
   constructor() {
     super();
   }

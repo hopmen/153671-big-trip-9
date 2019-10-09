@@ -11,7 +11,6 @@ export default class TripInfo extends AbstractComponent {
     this._cards = cards;
   }
 
-
   getTemplate() {
     return `
       <div class="trip-info__main"> 
@@ -24,7 +23,6 @@ export default class TripInfo extends AbstractComponent {
         </p>
       </div>`.trim();
   }
-
 
   _getRouteTemplate(cards) {
     const cities = cards.map(({city}) => city.name);
@@ -42,5 +40,4 @@ export default class TripInfo extends AbstractComponent {
     }
     return result;
   }
-
 }

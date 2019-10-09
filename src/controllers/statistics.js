@@ -1,6 +1,5 @@
 import Statistics from "../components/statistics.js";
-import {Position, render} from "../utils.js";
-import moment from 'moment';
+import {Position, render, getDuration} from "../utils.js";
 import Chart from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -26,7 +25,6 @@ export default class StatisticsController {
     this._updateChartData(this._moneyChart, this._getMoneyData());
     this._updateChartData(this._transportChart, this._getTransportData());
     this._updateChartData(this._timeChart, this._getTimeData());
-
   }
 
   show() {
@@ -55,7 +53,6 @@ export default class StatisticsController {
         labels: this._getMoneyData().labels,
         datasets: [{
           data: this._getMoneyData().data,
-
           backgroundColor: `#fff`,
         }]
       },
@@ -112,7 +109,6 @@ export default class StatisticsController {
   _chartTransportInit() {
     const transportCtx = this._statistics.getElement().querySelector(`.statistics__chart--transport`);
 
-
     this._transportChart = new Chart(transportCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
@@ -120,7 +116,6 @@ export default class StatisticsController {
         labels: this._getTransportData().labels,
         datasets: [{
           data: this._getTransportData().data,
-
           backgroundColor: `#fff`,
         }]
       },
@@ -174,7 +169,6 @@ export default class StatisticsController {
   _chartTimeInit() {
     const timeCtx = this._statistics.getElement().querySelector(`.statistics__chart--time`);
 
-
     this._timeChart = new Chart(timeCtx, {
       plugins: [ChartDataLabels],
       type: `horizontalBar`,
@@ -182,7 +176,6 @@ export default class StatisticsController {
         labels: this._getTimeData().labels,
         datasets: [{
           data: this._getTimeData().data,
-
           backgroundColor: `#fff`,
         }]
       },
@@ -282,11 +275,8 @@ export default class StatisticsController {
 
   _getTimeData() {
     const cards = this._cards.map((card) => {
-      const startMoment = moment(card.startTime);
-      const endMoment = moment(card.endTime);
-      const diff = endMoment.diff(startMoment);
       const title = `${card.type.title}  ${card.type.placeholder}  ${card.city.name}`;
-      const duration = Math.abs(moment.duration(diff).asHours());
+      const duration = getDuration(card.startTime, card.endTime).asHours();
 
       return {
         title,
@@ -302,5 +292,4 @@ export default class StatisticsController {
       data: durations
     };
   }
-
 }

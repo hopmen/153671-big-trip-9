@@ -34,6 +34,7 @@ export default class ModelCard {
 
   static toRAW(data) {
     return {
+      'id': data.id ? data.id : null,
       'base_price': data.price,
       'date_from': data.startTime,
       'date_to': data.endTime,

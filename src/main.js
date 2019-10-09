@@ -3,15 +3,18 @@ import TripController from "./controllers/trip.js";
 import TripInfoController from "./controllers/trip-info.js";
 import StatisticsController from "./controllers/statistics.js";
 import FilterController from "./controllers/filter.js";
-
 import {Position, Action, ButtonText, render} from "./utils.js";
-
 import API from "./api.js";
+import Provider from "./provider.js";
+import Store from "./store.js";
 import ModelCard from "./models/model-card.js";
 
 const AUTHORIZATION = `Basic dXNlckBwYXNzd29yZAo=${Math.random()}`;
 const END_POINT = `https://htmlacademy-es-9.appspot.com/big-trip`;
+const CARDS_STORE_KEY = `cards-store-key`;
 const api = new API({endPoint: END_POINT, authorization: AUTHORIZATION});
+const store = new Store({key: CARDS_STORE_KEY, storage: localStorage});
+const provider = new Provider({api, store, generateId: () => String(Date.now() + Math.random())});
 
 const tripInfoContainer = document.querySelector(`.trip-info`);
 const navHeader = document.querySelector(`.trip-controls h2:first-child`);
@@ -27,19 +30,16 @@ const updateData = (cards) => {
   statisticsController.updateData(cards);
 };
 
-
-const onDataChange = (actionType, cards, element) => {
+const onDataChange = (actionType, card, element) => {
   switch (actionType) {
     case Action.UPDATE:
       element.block();
       element.changeSubmitBtnText(ButtonText.SAVING);
-
-      api.updateCard({
-        id: cards.id,
-        data: ModelCard.toRAW(cards)
+      provider.updateCard({
+        id: card.id,
+        data: ModelCard.toRAW(card)
       })
-        .then(() => api.getCards())
-
+        .then(() => provider.getCards())
         .then((data) => updateData(data))
         .catch(() => {
           element.shake();
@@ -50,12 +50,10 @@ const onDataChange = (actionType, cards, element) => {
     case Action.DELETE:
       element.block();
       element.changeDeleteBtnText(ButtonText.DELETING);
-
-      api.deleteCard({
-        id: cards.id
+      provider.deleteCard({
+        id: card.id
       })
-        .then(() => api.getCards())
-
+        .then(() => provider.getCards())
         .then((data) => updateData(data))
         .catch(() => {
           element.shake();
@@ -66,19 +64,16 @@ const onDataChange = (actionType, cards, element) => {
     case Action.CREATE:
       element.block();
       element.changeSubmitBtnText(ButtonText.SAVING);
-
-      api.createCard({
-        data: ModelCard.toRAW(cards)
+      provider.createCard({
+        data: ModelCard.toRAW(card)
       })
-        .then(() => api.getCards())
-
+        .then(() => provider.getCards())
         .then((data) => updateData(data))
         .catch(() => {
           element.shake();
           element.unblock();
           element.changeSubmitBtnText(ButtonText.SAVE);
         });
-
       break;
   }
 };
@@ -94,13 +89,11 @@ const setTableActive = () => {
   menu.getElement().querySelector(`#stats`).classList.remove(`trip-tabs__btn--active`);
 };
 
-
 const menu = new Menu();
 const statisticsController = new StatisticsController(mainContainer);
 const filterController = new FilterController(filterHeader, onFilterSwitch);
 const tripInfoController = new TripInfoController(tripInfoContainer);
 const tripController = new TripController(tripContainer, onDataChange);
-
 const loadingText = `Loading…`;
 
 let allDestinations;
@@ -109,7 +102,6 @@ let allOffers;
 render(navHeader, menu.getElement(), Position.AFTER);
 statisticsController.hide();
 tripContainer.innerHTML = loadingText;
-
 
 menu.getElement().addEventListener(`click`, (evt) => {
   evt.preventDefault();
@@ -138,19 +130,27 @@ addCardBtn.addEventListener(`click`, () => {
   setTableActive();
 });
 
-api.getCities().then((cities) => {
+provider.getCities().then((cities) => {
   allDestinations = cities;
 
-  api.getOffers().then((offers) => {
+  provider.getOffers().then((offers) => {
     allOffers = offers;
 
-    api.getCards().then((cards) => {
+    provider.getCards().then((cards) => {
       tripInfoController.create(cards);
       filterController.create(cards);
       tripController.show(cards);
       statisticsController.create(cards);
     });
   });
+});
+
+window.addEventListener(`offline`, () => {
+  document.title = `${document.title}[OFFLINE]`;
+});
+window.addEventListener(`online`, () => {
+  document.title = document.title.split(`[OFFLINE]`)[0];
+  provider.syncTasks();
 });
 
 
